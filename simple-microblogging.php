@@ -63,7 +63,7 @@ class microblog_widget extends WP_Widget {
 
 	function widget ($args,$instance) {
 		extract($args);
-		$idObj = get_category_by_slug('tweets'); 
+		$idObj = get_category_by_slug('microposts'); 
 		$catid = $idObj->term_id;
 		$title = $instance['title'];
 		$numberposts = $instance['numberposts'];
@@ -71,7 +71,7 @@ class microblog_widget extends WP_Widget {
 
 		// retrieve posts information from database
 		global $post;
-		$query = "category_name=tweets&posts_per_page=" . $numberposts;
+		$query = "category_name=microposts&posts_per_page=" . $numberposts;
 		$query_results = new WP_Query($query);
 
 		// build the widget contents!
@@ -133,11 +133,11 @@ function microblog_shortcode($atts) {
 	), $atts ) );
 
 	/*
-	* query the database for tweets!
+	* query the database for microposts!
 	* query syntax:
 	* http://codex.wordpress.org/Class_Reference/WP_Query#Parameters
 	*/
-	$query .= "category_name=tweets&posts_per_page=" . $num;
+	$query .= "category_name=microposts&posts_per_page=" . $num;
 	$query_results = new WP_Query($query);
 	
 	if ( $query_results->post_count == 0 ) {
@@ -187,7 +187,7 @@ function microblog_shortcode($atts) {
 */
 add_filter('pre_get_posts','microblog_exclude_categories');
 function microblog_exclude_categories($query) {
-	$idObj = get_category_by_slug('tweets'); 
+	$idObj = get_category_by_slug('microposts'); 
 	$id = $idObj->term_id;
   	$cat[0]=$id;
   	if ($query->is_home || ($query->is_feed && !$query->is_category) ) {
