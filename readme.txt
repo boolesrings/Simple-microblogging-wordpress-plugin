@@ -14,7 +14,7 @@ Use your wordpress site as a microblog; display the microposts in a widget or us
 This simple plugin allows you to easily post short messages.  Rather than
 appearing in your stream of posts, they can be displayed either in a widget
 or using the `[microblog]` shortcode on any post or page.  To get started,
-simply make a new post and assign it the category `micropost`.  If you give
+simply make a new post and assign it the category `microposts`.  If you give
 the post a title, then it will displayed in bold and used as the first
 few words of the micropost.
 
