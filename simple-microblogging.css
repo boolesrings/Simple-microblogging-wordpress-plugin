@@ -1,0 +1,9 @@
+.microblog-widget-post-title {
+	font-weight: bold;
+}
+.microblog-shortcode-post-title {
+	font-weight: bold;
+}
+ul.microblog-shortcode div.sharing {
+	display: none;
+}
