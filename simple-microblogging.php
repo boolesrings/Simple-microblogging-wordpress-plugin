@@ -7,7 +7,39 @@
  * Author URI: http://boolesrings.org
 */
 
-define('SCRIPT_DEBUG', true);
+
+/*
+ * Create the new post type
+*/
+add_action( 'init', 'create_micropost_type' );
+function create_micropost_type() {
+	register_post_type( 'micropost',
+		array(
+			'labels' => array(
+				'name' => __( 'Microposts' ),
+				'singular_name' => __( 'Micropost' ),
+			),
+			'has_archive' => true,
+			'menu_icon' => plugins_url( 'microblogging-icon.png', __FILE__ ),
+			'menu_position' => 5,
+			'public' => true,
+			'rewrite' => array( 'slug' => 'microposts' ),
+			'supports' => array( 'title', 'editor', 'comments' ),
+//			'taxonomies' => array ( 'category', 'post_tag' ),
+		)
+	);
+}
+
+/*
+ * Tells wordpress to reset its permalink structure, to accommodate the new post type
+*/
+register_activation_hook( __FILE__, 'my_rewrite_flush' );
+function my_rewrite_flush() 
+{
+	create_micropost_type();
+	flush_rewrite_rules();
+}
+
 
 /*
  * Microblog widget code
@@ -63,15 +95,13 @@ class microblog_widget extends WP_Widget {
 
 	function widget ($args,$instance) {
 		extract($args);
-		$idObj = get_category_by_slug('microposts'); 
-		$catid = $idObj->term_id;
 		$title = $instance['title'];
 		$numberposts = $instance['numberposts'];
 		$rss = $instance['rss'];
 
 		// retrieve posts information from database
 		global $post;
-		$query = "category_name=microposts&posts_per_page=" . $numberposts;
+		$query = "post_type=micropost&posts_per_page=" . $numberposts;
 		$query_results = new WP_Query($query);
 
 		// build the widget contents!
@@ -86,7 +116,14 @@ class microblog_widget extends WP_Widget {
 				      . " </span>";
 			}
 			$out .= "<span class='microblog-widget-post-content'>"
-			      . get_the_excerpt()
+			      . wp_kses($post->post_content,
+					array('a'      => array('href'=>array()),
+					      'em'     => array(),
+					      'strong' => array(),
+					      'b'      => array(),
+					      'i'      => array(),
+					      )
+					)
 			      . "</span>";
 			$out .= "<span lass='microblog-widget-commentlink'>";
 			$out .= " <a href='" . get_permalink() . "'>";
@@ -104,7 +141,7 @@ class microblog_widget extends WP_Widget {
 		echo $before_title;
 		echo $title;
 		if ($rss) {
-			echo ' <a href="' . get_category_link($catid) . 'feed/" class="rss">';
+			echo ' <a href="' . get_site_url() . '/feed/?post_type=micropost" class="rss">';
 			echo '<img src="' . site_url() . '/wp-includes/images/rss.png"/>';
 			echo '</a>';
 		}
@@ -133,11 +170,11 @@ function microblog_shortcode($atts) {
 	), $atts ) );
 
 	/*
-	* query the database for microposts!
+	* query the database for tweets!
 	* query syntax:
 	* http://codex.wordpress.org/Class_Reference/WP_Query#Parameters
 	*/
-	$query .= "category_name=microposts&posts_per_page=" . $num;
+	$query .= "post_type=micropost&posts_per_page=" . $num;
 	$query_results = new WP_Query($query);
 	
 	if ( $query_results->post_count == 0 ) {
@@ -161,7 +198,7 @@ function microblog_shortcode($atts) {
 			      . " </span>";
 		}
 		$out .= "<span class='microblog-shortcode-post-content'>"
-		      . get_the_excerpt()
+		      . $post->post_content
 		      . "</span>";
 		$out .= "<span class='microblog-shortcode-commentlink'>";
 		$out .= " <a href='" . get_permalink() . "'>";
@@ -187,7 +224,7 @@ function microblog_shortcode($atts) {
 */
 add_filter('pre_get_posts','microblog_exclude_categories');
 function microblog_exclude_categories($query) {
-	$idObj = get_category_by_slug('microposts'); 
+	$idObj = get_category_by_slug('tweets'); 
 	$id = $idObj->term_id;
   	$cat[0]=$id;
   	if ($query->is_home || ($query->is_feed && !$query->is_category) ) {

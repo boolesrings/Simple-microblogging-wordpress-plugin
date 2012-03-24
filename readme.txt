@@ -4,46 +4,49 @@ Contributors: sgcoskey
 Donate link: http://boolesrings.org
 Tags: tweet, tweets, microblog, microblogging, micropost
 Requires at least: 3.0
-Tested up to: 3.3
+Tested up to: 3.3.1
 Stable tag: 0.0
 
 Use your wordpress site as a microblog; display the microposts in a widget or using a shortcode.
 
 == Description ==
 
-This simple plugin allows you to easily post short messages.  Rather than
-appearing in your stream of posts, they can be displayed either in a widget
-or using the `[microblog]` shortcode on any post or page.  To get started,
-simply make a new post and assign it the category `microposts`.  If you give
-the post a title, then it will displayed in bold and used as the first
-few words of the micropost.
+This simple plugin allows you to easily post short messages.  These messages will not appear in your stream of posts; instead you can display them in a widget in yours sidebar.  You can also place them in any post or page by using the `[microblog]` shortcode.
 
-Note that in the future, we intend to use a new `post_type` rather than a
-special category to segregate the microposts.
+To get started, just look for the new `Microposts` administration panel in your dashboard.  Click `Add new` and then compose a short message in the same way that you normally compose your posts.  If you give the micropost a title, then it will displayed in bold and used as the first few words of the micropost.
+
+Then, either add the widget to your sidebar or add the `[microblog]` shortcode into your site, and that's it!
 
 The `[microblog]` shortcode supports several options:
 
-* **null_text**: If no results are returned, shows this text.
-Defaults to `(none)`.
+* ** num**: The number of microposts to show.  Defaults to `5`.  Use `-1` to show all microposts.
+
+* **null_text**: If no results are returned, shows this text.  Defaults to `(none)`.
 
 * **show_date**: If defined, the post date will precede the microposts.
 
-* **date_format**: If showing the date, this php date format will be
-used.  The default is the Date Format value from the General Settings
-page.  I recommend `"F j, Y"`, which displays as "May 12, 2012".
+* **date_format**: If showing the date, this php date format will be used.  The default is the Date Format value from the General Settings page.  I recommend `"F j"`, which displays as "May 12".
 
-The output can then be further formatted using CSS.  We recommend the
-plugin [Improved Simpler
-CSS](http://wordpress.org/extend/plugins/imporved-simpler-css/) for
-quickly styling your post list (and your site)!
+The output can then be further formatted using CSS.  We recommend the plugin [Improved Simpler CSS](http://wordpress.org/extend/plugins/imporved-simpler-css/) for quickly styling your post list (and your site)!
 
-Report bugs, give feedback, or fork this plugin on
-[GitHub](http://github.com/scoskey/Simple-microblogging-wordpress-plugin).
+Report bugs, give feedback, or fork this plugin on [GitHub](http://github.com/scoskey/Simple-microblogging-wordpress-plugin).
 
 == Installation ==
 
 Nothing unusual here!
 
+== Screenshots ==
+
+1. A rendered widget containing my two microposts
+2. The widget configuration box
+
+== Other notes ==
+
+If you are having trouble viewing your microposts, try visiting your permalinks preference pane and clicking `Save changes`.
+
+It is a known issue that some permalink structures do not work with Simple microblogging when the plugin `Salmon for wordpress` is installed.
+
 == Changelog ==
 
 `0.0` initial release
+
