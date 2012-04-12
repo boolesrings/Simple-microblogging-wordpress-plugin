@@ -7,13 +7,13 @@ Requires at least: 3.0
 Tested up to: 3.3.1
 Stable tag: 0.0
 
-Use your wordpress site as a microblog; display the microposts in a widget or using a shortcode.
+Add a microblog to your site; display the microposts in a widget or using a shortcode.
 
 == Description ==
 
-This simple plugin allows you to easily post short messages.  These messages will not appear in your stream of posts; instead you can display them in a widget in yours sidebar.  You can also place them in any post or page by using the `[microblog]` shortcode.
+This simple plugin allows you to easily post short messages such as thoughts and updates.  These messages will not appear in your stream of posts; instead you can display them in a widget in yours sidebar.  You can also display them in any post or page by using the `[microblog]` shortcode.
 
-To get started, just look for the new `Microposts` administration panel in your dashboard.  Click `Add new` and then compose a short message in the same way that you normally compose your posts.  If you give the micropost a title, then it will displayed in bold and used as the first few words of the micropost.
+To get started, just look for the new `Microposts` administration panel in your dashboard.  Click `Add new` and then compose a short message in the same way that you normally compose your posts.  If you give the micropost a title, then it will be displayed in bold and used as the first few words of the micropost.
 
 Then, either add the widget to your sidebar or add the `[microblog]` shortcode into your site, and that's it!
 
@@ -23,7 +23,7 @@ The `[microblog]` shortcode supports several options:
 
 * **null_text**: If no results are returned, shows this text.  Defaults to `(none)`.
 
-* **show_date**: If defined, the post date will precede the microposts.
+* **show_date**: If defined, the creation date will precede the microposts.
 
 * **date_format**: If showing the date, this php date format will be used.  The default is the Date Format value from the General Settings page.  I recommend `"F j"`, which displays as "May 12".
 
@@ -49,4 +49,3 @@ It is a known issue that some permalink structures do not work with Simple micro
 == Changelog ==
 
 `0.0` initial release
-

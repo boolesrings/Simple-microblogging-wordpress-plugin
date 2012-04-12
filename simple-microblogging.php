@@ -25,6 +25,7 @@ function create_micropost_type() {
 			'public' => true,
 			'rewrite' => array( 'slug' => 'microposts' ),
 			'supports' => array( 'title', 'editor', 'comments' ),
+// uncomment to support categories and tags:
 //			'taxonomies' => array ( 'category', 'post_tag' ),
 		)
 	);
@@ -216,21 +217,6 @@ function microblog_shortcode($atts) {
 
 	return $out;
 
-}
-
-
-/*
- * Category exclusion code
-*/
-add_filter('pre_get_posts','microblog_exclude_categories');
-function microblog_exclude_categories($query) {
-	$idObj = get_category_by_slug('tweets'); 
-	$id = $idObj->term_id;
-  	$cat[0]=$id;
-  	if ($query->is_home || ($query->is_feed && !$query->is_category) ) {
-		$query->set('category__not_in', $cat); }
-
-	return $query;
 }
 
 
