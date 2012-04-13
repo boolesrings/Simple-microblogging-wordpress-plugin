@@ -1,6 +1,6 @@
 === Simple microblogging ===
 
-Contributors: sgcoskey
+Contributors: sgcoskey, vgitman
 Donate link: http://boolesrings.org
 Tags: tweet, tweets, microblog, microblogging, micropost
 Requires at least: 3.0
