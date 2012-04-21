@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Simple microblogging
  * Description: Use your wordpress site as a microblog; display the microposts in a widget or using a shortcode.
- * Version: 0.0
+ * Version: 0.1
  * Author: Samuel Coskey, Victoria Gitman
  * Author URI: http://boolesrings.org
 */
@@ -24,7 +24,7 @@ function create_micropost_type() {
 			'menu_position' => 5,
 			'public' => true,
 			'rewrite' => array( 'slug' => 'microposts' ),
-			'supports' => array( 'title', 'editor', 'comments' ),
+			'supports' => array( 'title', 'editor', 'author', 'comments' ),
 // uncomment to support categories and tags:
 //			'taxonomies' => array ( 'category', 'post_tag' ),
 		)
@@ -79,6 +79,10 @@ class microblog_widget extends WP_Widget {
    <input type="text" name="<?php echo $this->get_field_name('numberposts'); ?>" id="<?php echo $this->get_field_id('numberposts'); ?>" value="<?php echo $instance['numberposts']; ?>">
   </p>
   <p>
+   <input type="checkbox" id="<?php echo $this->get_field_id('use_excerpt'); ?>" name="<?php echo $this->get_field_name('use_excerpt'); ?>" <?php if ($instance['use_excerpt']) echo 'checked="checked"' ?> />
+   <label for="<?php echo $this->get_field_id('use_excerpt'); ?>">Show excerpts only?</label>
+  </p>
+  <p>
    <input type="checkbox" id="<?php echo $this->get_field_id('rss'); ?>" name="<?php echo $this->get_field_name('rss'); ?>" <?php if ($instance['rss']) echo 'checked="checked"' ?> />
    <label for="<?php echo $this->get_field_id('rss'); ?>">Show RSS feed link?</label>
   </p>
@@ -87,8 +91,9 @@ class microblog_widget extends WP_Widget {
 
 	function update ($new_instance, $old_instance) {
 		$instance = $old_instance;
-		$instance['numberposts'] = $new_instance['numberposts'];
 		$instance['title'] = $new_instance['title'];
+		$instance['numberposts'] = $new_instance['numberposts'];
+		$instance['use_excerpt'] = $new_instance['use_excerpt'];
 		$instance['rss'] = $new_instance['rss'];
 
 		return $instance;
@@ -98,6 +103,7 @@ class microblog_widget extends WP_Widget {
 		extract($args);
 		$title = $instance['title'];
 		$numberposts = $instance['numberposts'];
+		$use_excerpt = $instance['use_excerpt'];
 		$rss = $instance['rss'];
 
 		// retrieve posts information from database
@@ -116,16 +122,15 @@ class microblog_widget extends WP_Widget {
 				      . $post_title
 				      . " </span>";
 			}
-			$out .= "<span class='microblog-widget-post-content'>"
-			      . wp_kses($post->post_content,
-					array('a'      => array('href'=>array()),
-					      'em'     => array(),
-					      'strong' => array(),
-					      'b'      => array(),
-					      'i'      => array(),
-					      )
-					)
-			      . "</span>";
+			$out .= "<span class='microblog-widget-post-content'>";
+			if ( $use_excerpt ) {
+				add_filter('excerpt_more', 'micropost_excerpt_more');
+				$out .= get_the_excerpt();
+				remove_filter('excerpt_more', 'micropost_excerpt_more');
+			} else {
+				$out .= $post->post_content;
+			}
+			$out .= "</span>";
 			$out .= "<span lass='microblog-widget-commentlink'>";
 			$out .= " <a href='" . get_permalink() . "'>";
 			$out .= "<img width='14px' src='"
@@ -168,7 +173,13 @@ function microblog_shortcode($atts) {
 		'null_text'   => '(none)',
 		'show_date'   => '',
 		'date_format' => get_option('date_format'), // I recommend 'F j'
+		'use_excerpt' => '',
+		'q'           => '',
 	), $atts ) );
+
+	if ( $q ) {
+		$q = str_replace ( "&#038;", "&", $q );
+	}
 
 	/*
 	* query the database for tweets!
@@ -176,6 +187,9 @@ function microblog_shortcode($atts) {
 	* http://codex.wordpress.org/Class_Reference/WP_Query#Parameters
 	*/
 	$query .= "post_type=micropost&posts_per_page=" . $num;
+	if ( $q ) {
+		$query .= "&" . $q;
+	}
 	$query_results = new WP_Query($query);
 	
 	if ( $query_results->post_count == 0 ) {
@@ -198,9 +212,15 @@ function microblog_shortcode($atts) {
 			      . $post_title
 			      . " </span>";
 		}
-		$out .= "<span class='microblog-shortcode-post-content'>"
-		      . $post->post_content
-		      . "</span>";
+		$out .= "<span class='microblog-shortcode-post-content'>";
+		if ( $use_excerpt ) {
+			add_filter('excerpt_more', 'micropost_excerpt_more');
+			$out .= get_the_excerpt();
+			remove_filter('excerpt_more', 'micropost_excerpt_more');
+		} else {
+			$out .= $post->post_content;
+		}
+		$out .= "</span>";
 		$out .= "<span class='microblog-shortcode-commentlink'>";
 		$out .= " <a href='" . get_permalink() . "'>";
 		$out .= "<img width='14px' src='"
@@ -217,6 +237,9 @@ function microblog_shortcode($atts) {
 
 	return $out;
 
+}
+function micropost_excerpt_more($more) {
+	return ' ...';
 }
 
 
