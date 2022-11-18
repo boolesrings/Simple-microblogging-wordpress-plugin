@@ -1,7 +1,7 @@
 === Simple microblogging ===
 
 Contributors: sgcoskey, vgitman, VegetarianZombie
-Donate link: http://boolesrings.org
+Donate link: https://boolesrings.org
 Tags: tweet, tweets, microblog, microblogging, micropost
 Requires at least: 3.0
 Tested up to: 3.3.1
