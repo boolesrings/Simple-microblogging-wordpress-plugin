@@ -1,6 +1,6 @@
 === Simple microblogging ===
 
-Contributors: sgcoskey, vgitman
+Contributors: sgcoskey, vgitman, VegetarianZombie
 Donate link: http://boolesrings.org
 Tags: tweet, tweets, microblog, microblogging, micropost
 Requires at least: 3.0
@@ -52,6 +52,6 @@ It is a known issue that some permalink structures do not work with Simple micro
 
 == Changelog ==
 
-`0.1` Added support for authors.  Added use_excerpt option to the shortcode
+0.1 Added support for authors.  Added use_excerpt option to the shortcode
 
-`0.0` initial release
+0.0 initial release
