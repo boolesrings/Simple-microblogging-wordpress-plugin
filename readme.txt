@@ -1,13 +1,14 @@
 === Simple microblogging ===
 
-Contributors: sgcoskey, vgitman, VegetarianZombie
+Contributors: sgcoskey, vgitman, VegetarianZombie,obaby
 Donate link: https://boolesrings.org
 Tags: tweet, tweets, microblog, microblogging, micropost
 Requires at least: 3.0
-Tested up to: 3.3.1
+Tested up to: 6.1.1
 Stable tag: 0.1
+增强版支持网站：http://oba.by
 
-Add a microblog to your site; display the microposts in a widget or using a shortcode.
+Add a microblog to your site; display the microposts in a widget or using a shortcode. 增强版优化页面显示，增加分页功能。
 
 == Description ==
 
@@ -51,6 +52,11 @@ If you are having trouble viewing your microposts, try visiting your permalinks 
 It is a known issue that some permalink structures do not work with Simple microblogging when the plugin `Salmon for wordpress` is installed.
 
 == Changelog ==
+0.2 
+1.优化文章显示
+2.增加分页功能
+3.替换图标
+4.修改菜单名称
 
 0.1 Added support for authors.  Added use_excerpt option to the shortcode
 
