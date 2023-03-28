@@ -50,7 +50,7 @@ function create_micropost_type() {
     'singular_name' => __( 'Micropost' ),
    ),
    'has_archive' => true,
-   'menu_icon' => plugins_url( 'bubble1-icon.png', __FILE__ ),
+   'menu_icon' => plugins_url( 'bubble2-icon.png', __FILE__ ),
    'menu_position' => 5,
    'public' => true,
    'rewrite' => array( 'slug' => 'microposts' ),
