@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Simple microblogging 【增强版】
  * Description: Use your wordpress site as a microblog; display the microposts in a widget or using a shortcode. 增强版优化页面显示，增加分页功能。技术支持：http://oba.by
- * Version: 0.2
+ * Version: 0.2.1
  * Author: Samuel Coskey, Victoria Gitman, obaby
  * Author URI: http://boolesrings.org
 */
@@ -275,8 +275,8 @@ $args = array(
         'post_type' => 'micropost',
         'orderby' => 'date',
         'order' => 'DESC',
-        'posts_per_page' => 5,
-        'post_status' => array('publish', 'pending', 'draft'),
+        'posts_per_page' => $num,
+        'post_status' => array('publish'),
         'paged' => $paged
     );
 $the_query = new WP_Query($args);

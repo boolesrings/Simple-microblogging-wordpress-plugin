@@ -52,6 +52,9 @@ If you are having trouble viewing your microposts, try visiting your permalinks 
 It is a known issue that some permalink structures do not work with Simple microblogging when the plugin `Salmon for wordpress` is installed.
 
 == Changelog ==
+0.2.1
+修复分页错误
+
 0.2 
 1.优化文章显示
 2.增加分页功能
