@@ -58,6 +58,9 @@ It is a known issue that some permalink structures do not work with Simple micro
 1.0
 1.修复shortcode解析问题
 
+=======
+0.2.1
+修复分页错误
 
 0.2 
 1.优化文章显示
