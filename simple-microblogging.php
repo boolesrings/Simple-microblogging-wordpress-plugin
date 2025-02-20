@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Simple microblogging 【增强版】
  * Description: Use your wordpress site as a microblog; display the microposts in a widget or using a shortcode. 增强版优化页面显示，增加分页功能。技术支持：http://oba.by
- * Version: 0.2
+ * Version: 1.0
  * Author: Samuel Coskey, Victoria Gitman, obaby
  * Author URI: http://boolesrings.org
 */
@@ -85,7 +85,11 @@ class microblog_widget extends WP_Widget {
   $control_ops = array(
    'id_base' => 'microblog-widget',
   );
-  $this->WP_Widget('microblog-widget', 'Microblog', $widget_ops, $control_ops );
+  $this->__construct('microblog-widget', 'Microblog', $widget_ops, $control_ops );
+
+//$this->WP_Widget('microblog-widget', 'Microblog', $widget_ops, $control_ops );
+
+
  }
  function form ($instance) {
   $defaults = array(
@@ -154,7 +158,7 @@ class microblog_widget extends WP_Widget {
    $out .= "<span lass='microblog-widget-commentlink'>";
    $out .= " <a href='" . get_permalink() . "'>";
    $out .= "<img width='14px' src='"
-         . site_url() . "/wp-includes/images/wlw/wp-comments.png'>";
+         . site_url() . "/img/Comment_32x32.png'>";
    $out .= "&times;" . get_comments_number();
    $out .= '</a>';
    $out .= "</span>\n";
@@ -237,13 +241,13 @@ function microblog_shortcode($atts) {
  $out = "<ul class='microblog-shortcode'>\n";
  while ( $query_results->have_posts() ) {
   $query_results->the_post();
-  $avatar = get_avatar( get_the_author_email(), '24');;
+  $avatar = get_avatar( get_the_author_email(), '24','', '', array('style' => 'border-radius: 50%; overflow: hidden;') );;
   $out .= "<li> ".$avatar;
   if ( $show_date) {
-   $out .= "<span class='microblog-shortcode-date'>"
+   $out .= "<span style='margin-left: 8px;'></span><span class='microblog-shortcode-date'>"
          . get_the_date($date_format)
          . "</span>";
-   $out .= "<span class='microblog-shortcode-date-sep'>: </span>\n";
+   $out .= "<span class='microblog-shortcode-date-sep'>: </span><span style='margin-right: 8px;'></span>\n";
   }
   $post_title = the_title( '', '', false );
   if ( $post_title ) {
@@ -257,13 +261,15 @@ function microblog_shortcode($atts) {
    $out .= get_the_excerpt();
    remove_filter('excerpt_more', 'micropost_excerpt_more');
   } else {
-   $out .= $post->post_content;
+
+$parsed_content = do_shortcode($post->post_content);
+   $out .= $parsed_content;
   }
   $out .= "</span></br>";
   $out .= "</br><span class='microblog-shortcode-commentlink'>  评论：";
   $out .= " <a href='" . get_permalink() . "'>";
-  $out .= "<img width='14px' src='"
-        . site_url() . "/wp-includes/images/wlw/wp-comments.png'>";
+  $out .= "<img width='18' height='18' src='"
+        . site_url() . "/wp-content/plugins/simple-microblogging/bubble-icon.png'>";
   $out .= "&times;" . get_comments_number();
   $out .= "</a>";
   $out .= "</span>\n";
@@ -275,8 +281,8 @@ $args = array(
         'post_type' => 'micropost',
         'orderby' => 'date',
         'order' => 'DESC',
-        'posts_per_page' => 5,
-        'post_status' => array('publish', 'pending', 'draft'),
+        'posts_per_page' => $num,
+        'post_status' => array('publish'),
         'paged' => $paged
     );
 $the_query = new WP_Query($args);
@@ -285,6 +291,7 @@ $the_query = new WP_Query($args);
 if ($total_pages > 1){
     $current_page = max(1, get_query_var('paged'));
  //echo $current_page;
+	$out .= "<div id='paging' class='group'>";
     $out .= paginate_links(array(
         'base' => get_pagenum_link(1) . '%_%',
         'format' => '/page/%#%',
@@ -293,6 +300,7 @@ if ($total_pages > 1){
         'prev_text' => __('« prev'),
         'next_text' => __('next »'),
     ));
+    $out .= "</div>";
 }
  // clean up
  wp_reset_postdata();
