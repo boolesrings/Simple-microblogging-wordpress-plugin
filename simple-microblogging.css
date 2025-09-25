@@ -1,15 +1,33 @@
 .microblog-widget-post-title {
-	font-weight: bold;
+    display: block;
+color: #161616;
+font-weight: bold;
+margin-bottom: 5px;
 }
 .microblog-shortcode-post-title {
-	font-weight: bold;
+    display: inline-block;
+color: #161616;
+font-weight: bold;
+margin-right: 10px;
 }
 ul.microblog-shortcode div.sharing {
-	display: none;
+  display: none;
 }
 .microblog-widget-post-content p {
-	display: inline;
+  display: inline;
 }
 .microblog-shortcode-post-content p {
-	display: inline;
+  display: inline;
+}
+.microblog-widget-commentlink {
+    display: block;
+    color: #161616;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.microblog-shortcode-commentlink {
+        display: inline-block;
+color: #161616;
+font-weight: bold;
+margin-right: 10px;
 }

@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Simple microblogging 【增强版】
  * Description: Use your wordpress site as a microblog; display the microposts in a widget or using a shortcode. 增强版优化页面显示，增加分页功能。技术支持：http://oba.by
- * Version: 1.0
+ * Version: 1.10
  * Author: Samuel Coskey, Victoria Gitman, obaby
  * Author URI: http://boolesrings.org
 */
@@ -96,6 +96,7 @@ class microblog_widget extends WP_Widget {
    'numberposts' => '5',
    'title' => '',
    'rss' => '',
+    'use_excerpt' => false,
   );
   $instance = wp_parse_args( (array) $instance, $defaults );
 ?>
@@ -142,9 +143,15 @@ class microblog_widget extends WP_Widget {
    $out .= "<li>";
    $post_title = the_title( '', '', false );
    if ( $post_title ) {
-    $out .= "<span class='microblog-widget-post-title'>"
-          . $post_title
-          . " </span>";
+    $out .= "<div class='microblog-widget-post-title'>"
+          ." <a href='" . get_permalink() . "'>"
+         . $post_title. "</a>"
+	 . " </div>";
+    $out .= "<div class='microblog-widget-commentlink'> <a href='" . get_permalink() . "'> 评论:";
+   $out .= "<img width='14px' src='"
+        . site_url() . "/wp-content/plugins/simple-microblogging/bubble-icon.png'>";
+   $out .= "&times;" . get_comments_number();
+   $out .= '</a></div>';
    }
    $out .= "<span class='microblog-widget-post-content'>";
    if ( $use_excerpt ) {
@@ -152,16 +159,18 @@ class microblog_widget extends WP_Widget {
     $out .= get_the_excerpt();
     remove_filter('excerpt_more', 'micropost_excerpt_more');
    } else {
-    $out .= $post->post_content;
+    // 使用 apply_filters 来确保所有内容过滤器都被应用，包括视频处理
+    $parsed_content = apply_filters('the_content', $post->post_content);
+    $out .= $parsed_content;
    }
    $out .= "</span>";
-   $out .= "<span lass='microblog-widget-commentlink'>";
-   $out .= " <a href='" . get_permalink() . "'>";
-   $out .= "<img width='14px' src='"
-         . site_url() . "/img/Comment_32x32.png'>";
-   $out .= "&times;" . get_comments_number();
-   $out .= '</a>';
-   $out .= "</span>\n";
+   //$out .= "<span lass='microblog-widget-commentlink'>";
+   //$out .= " <a href='" . get_permalink() . "'>";
+   //$out .= "<img width='14px' src='"
+   //     . site_url() . "/wp-content/plugins/simple-microblogging/bubble-icon.png'>";
+   //$out .= "&times;" . get_comments_number();
+   //$out .= '</a>';
+  // $out .= "</span>\n";
    $out .= "</li>\n";
   }
   $out .= "</ul>";
@@ -261,8 +270,8 @@ function microblog_shortcode($atts) {
    $out .= get_the_excerpt();
    remove_filter('excerpt_more', 'micropost_excerpt_more');
   } else {
-
-$parsed_content = do_shortcode($post->post_content);
+   // 使用 apply_filters 来确保所有内容过滤器都被应用，包括视频处理
+   $parsed_content = apply_filters('the_content', $post->post_content);
    $out .= $parsed_content;
   }
   $out .= "</span></br>";

@@ -54,6 +54,12 @@ It is a known issue that some permalink structures do not work with Simple micro
 
 
 == Changelog ==
+2025.09.25
+1.10
+1.修复shortcode解析问题，修复视频文件无法显示的问题
+2.调整小插件样式
+
+=======
 2025.02.20
 1.0
 1.修复shortcode解析问题
